@@ -43,8 +43,11 @@
             this.btnCerca = new System.Windows.Forms.Button();
             this.btnRimuovi = new System.Windows.Forms.Button();
             this.pnlCerca = new System.Windows.Forms.Panel();
-            this.txtCerca = new System.Windows.Forms.TextBox();
             this.btnCercaNome = new System.Windows.Forms.Button();
+            this.txtCerca = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblStalle = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.pnlCerca.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -159,6 +162,7 @@
             this.btnCambia.TabIndex = 14;
             this.btnCambia.Text = "CAMBIA DATI CAVALLO ";
             this.btnCambia.UseVisualStyleBackColor = true;
+            this.btnCambia.Click += new System.EventHandler(this.btnCambia_Click);
             // 
             // btnCerca
             // 
@@ -182,6 +186,7 @@
             // 
             // pnlCerca
             // 
+            this.pnlCerca.Controls.Add(this.label6);
             this.pnlCerca.Controls.Add(this.btnCercaNome);
             this.pnlCerca.Controls.Add(this.txtCerca);
             this.pnlCerca.Location = new System.Drawing.Point(380, 395);
@@ -189,27 +194,58 @@
             this.pnlCerca.Size = new System.Drawing.Size(167, 132);
             this.pnlCerca.TabIndex = 18;
             // 
-            // txtCerca
-            // 
-            this.txtCerca.Location = new System.Drawing.Point(13, 16);
-            this.txtCerca.Name = "txtCerca";
-            this.txtCerca.Size = new System.Drawing.Size(133, 22);
-            this.txtCerca.TabIndex = 0;
-            // 
             // btnCercaNome
             // 
-            this.btnCercaNome.Location = new System.Drawing.Point(44, 56);
+            this.btnCercaNome.Location = new System.Drawing.Point(44, 75);
             this.btnCercaNome.Name = "btnCercaNome";
             this.btnCercaNome.Size = new System.Drawing.Size(75, 23);
             this.btnCercaNome.TabIndex = 1;
             this.btnCercaNome.Text = "CERCA";
             this.btnCercaNome.UseVisualStyleBackColor = true;
+            this.btnCercaNome.Click += new System.EventHandler(this.btnCercaNome_Click);
+            // 
+            // txtCerca
+            // 
+            this.txtCerca.Location = new System.Drawing.Point(20, 41);
+            this.txtCerca.Name = "txtCerca";
+            this.txtCerca.Size = new System.Drawing.Size(133, 22);
+            this.txtCerca.TabIndex = 0;
+            this.txtCerca.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCerca_KeyPress);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(585, 411);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(299, 16);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "NUMERO STALLE RIEMPITE SUL TOTALE (10):";
+            // 
+            // lblStalle
+            // 
+            this.lblStalle.AutoSize = true;
+            this.lblStalle.Location = new System.Drawing.Point(585, 439);
+            this.lblStalle.Name = "lblStalle";
+            this.lblStalle.Size = new System.Drawing.Size(14, 16);
+            this.lblStalle.TabIndex = 20;
+            this.lblStalle.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(139, 16);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "NOME DEL CAVALLO";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 539);
+            this.Controls.Add(this.lblStalle);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.pnlCerca);
             this.Controls.Add(this.btnRimuovi);
             this.Controls.Add(this.btnCerca);
@@ -254,6 +290,9 @@
         private System.Windows.Forms.Panel pnlCerca;
         private System.Windows.Forms.Button btnCercaNome;
         private System.Windows.Forms.TextBox txtCerca;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblStalle;
+        private System.Windows.Forms.Label label6;
     }
 }
 
