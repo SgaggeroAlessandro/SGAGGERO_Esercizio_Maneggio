@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace Esercizio_Maneggio
 {
+    //manca da fare: punto 4 (modificare i dati) e punto 6 (aggiornare il file in base alle modifiche su windows form)
+    //sistemare file, all'avvio del programma i dati nel file devono essere caricati nella listbox, se si rimuove un cavallo dalla listbox deve essere rimosso anche dal file, se si modifica un cavallo deve essere modificato anche nel file
     public partial class Form1 : System.Windows.Forms.Form
     {
         bool selezione = false;
@@ -187,14 +189,20 @@ namespace Esercizio_Maneggio
         {
            
             string nomecercato = txtCerca.Text;
-
+            bool trovato = false;
             for (int i = 0; i < Cavalli.Count; i++)
             {
                 if (nomecercato.ToLower() == Cavalli[i].Nome.ToLower())
                 {
                     MessageBox.Show("Cavallo trovato");
                     MessageBox.Show($"Il nome del cavallo è: {Cavalli[i].Nome} \n La razza è: {Cavalli[i].Razza} \n L'anno di nascita del cavallo è: {Cavalli[i].Anno} \n Il sesso è: {Cavalli[i].Sesso}");
+                    trovato = true;
+                    break;
                 }
+            }
+            if(trovato == false)
+            {
+                MessageBox.Show("Cavallo non trovato");
             }
         }
 
