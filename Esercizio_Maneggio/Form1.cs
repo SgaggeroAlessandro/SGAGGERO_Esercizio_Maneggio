@@ -14,7 +14,7 @@ namespace Esercizio_Maneggio
     
     public partial class Form1 : System.Windows.Forms.Form
     {
-        bool selezione = false;
+        bool selezione = false; 
        
         List<Cavallo> Cavalli = new List<Cavallo>();
         string percorso = "Maneggio.txt";
@@ -159,7 +159,7 @@ namespace Esercizio_Maneggio
             }
 
                 
-            int index = lbCavalli.SelectedIndex;
+            int index = lbCavalli.SelectedIndex; //identifico il cavallo selezionato
             Cavallo sCavallo = Cavalli[index];
 
             
@@ -174,7 +174,7 @@ namespace Esercizio_Maneggio
             txtBNome.Clear();
             txtBRazza.Clear();
             txtBAnno.Clear();
-            rdBM.Checked = false;
+            rdBM.Checked = false; //deseleziona i radio button
             rdBF.Checked = false;
 
             AggiornaFile(); //aggiorna il file dopo la rimozione
@@ -256,12 +256,12 @@ namespace Esercizio_Maneggio
                 return;
             }
 
-            Cavallo cavalloModificato = new Cavallo(nome, razza, anno, sesso);
+            Cavallo cavalloM = new Cavallo(nome, razza, anno, sesso);
 
-            Cavalli[index] = cavalloModificato;
+            Cavalli[index] = cavalloM;
             
 
-            string cavalloString = $"Nome: {cavalloModificato.Nome}, Razza: {cavalloModificato.Razza}, Anno: {cavalloModificato.Anno}, Sesso: {cavalloModificato.Sesso}";
+            string cavalloString = $"Nome: {cavalloM.Nome}, Razza: {cavalloM.Razza}, Anno: {cavalloM.Anno}, Sesso: {cavalloM.Sesso}";
             lbCavalli.Items[index] = cavalloString;
 
             AggiornaFile();
@@ -301,7 +301,7 @@ namespace Esercizio_Maneggio
                     {
                         string[] parti = riga.Split(';');
 
-                        if (parti.Length >= 4)
+                        if (parti.Length == 4)
                         {
                             Cavallo cavallo = new Cavallo
                             {
