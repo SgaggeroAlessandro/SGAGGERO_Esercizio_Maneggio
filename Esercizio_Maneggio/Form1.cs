@@ -11,15 +11,13 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace Esercizio_Maneggio
 {
-    //manca da fare: punto 4 (modificare i dati) e punto 6 (aggiornare il file in base alle modifiche su windows form)
-    //sistemare file, all'avvio del programma i dati nel file devono essere caricati nella listbox, se si rimuove un cavallo dalla listbox deve essere rimosso anche dal file, se si modifica un cavallo deve essere modificato anche nel file
+    
     public partial class Form1 : System.Windows.Forms.Form
     {
         bool selezione = false;
-        Cavallo[] maneggio = new Cavallo[10];
-        int i = 0;
+       
         List<Cavallo> Cavalli = new List<Cavallo>();
-        string percorso = @"C:\Users\alesg\OneDrive\Desktop\Maneggio.txt";
+        string percorso = "Maneggio.txt";
 
         public struct Cavallo
         {
@@ -42,6 +40,7 @@ namespace Esercizio_Maneggio
         {
             InitializeComponent();
             pnlCerca.Visible = false;
+            Carica();
         }
 
         private void txtBNome_KeyPress(object sender, KeyPressEventArgs e)
@@ -88,7 +87,7 @@ namespace Esercizio_Maneggio
         }
         private void btnSalva_Click(object sender, EventArgs e)
         {
-            if(Cavalli.Count <= 10)
+            if(Cavalli.Count < 10)
             {
                 string nome = txtBNome.Text;
 
@@ -125,16 +124,17 @@ namespace Esercizio_Maneggio
                 else
                 {
                     MessageBox.Show("Seleziona il sesso del cavallo");
+                    return;
                 }
                 Cavallo cavallo = new Cavallo(nome, razza, int.Parse(txtBAnno.Text), sesso);
                 string cavalloString = $"Nome: {cavallo.Nome}, Razza: {cavallo.Razza}, Anno: {cavallo.Anno}, Sesso: {cavallo.Sesso}";
-                maneggio[i] = cavallo;
-                i++;
-                lblStalle.Text = Cavalli.Count.ToString();
+                
+               
                 lbCavalli.Items.Add(cavalloString.ToString());
                
                 Cavalli.Add(cavallo);
-                string[] righe = { $"{cavallo.Nome} ; {cavallo.Razza} ; {cavallo.Anno} ; {cavallo.Sesso}" };
+                lblStalle.Text = Cavalli.Count.ToString();
+                string[] righe = { $"{cavallo.Nome};{cavallo.Razza};{cavallo.Anno};{cavallo.Sesso}" };
                 File.AppendAllLines(percorso, righe);
 
                 MessageBox.Show("Cavallo salvato con successo");
@@ -170,6 +170,14 @@ namespace Esercizio_Maneggio
             lblStalle.Text = Cavalli.Count.ToString();
 
             MessageBox.Show("Cavallo rimosso con successo");
+
+            txtBNome.Clear();
+            txtBRazza.Clear();
+            txtBAnno.Clear();
+            rdBM.Checked = false;
+            rdBF.Checked = false;
+
+            AggiornaFile(); //aggiorna il file dopo la rimozione
         }
 
         private void btnCerca_Click(object sender, EventArgs e)
@@ -208,7 +216,111 @@ namespace Esercizio_Maneggio
 
         private void btnCambia_Click(object sender, EventArgs e)
         {
+            if (lbCavalli.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleziona un cavallo dalla lista per modificarlo.");
+                return;
+            }
 
+            int index = lbCavalli.SelectedIndex;
+
+            string nome = txtBNome.Text;
+            if (string.IsNullOrEmpty(nome))
+            {
+                MessageBox.Show("Inserisci un nome valido");
+                return;
+            }
+
+            string razza = txtBRazza.Text;
+            if (string.IsNullOrEmpty(razza))
+            {
+                MessageBox.Show("Inserisci una razza valida");
+                return;
+            }
+
+            if (!int.TryParse(txtBAnno.Text, out int anno) || anno < 1995 || anno >= 2027)
+            {
+                MessageBox.Show("Inserisci un anno tra il 1995 e il 2026");
+                return;
+            }
+
+            char sesso = ' ';
+            if (selezione == true)
+            {
+                if (rdBM.Checked) sesso = 'M';
+                else sesso = 'F';
+            }
+            else
+            {
+                MessageBox.Show("Seleziona il sesso del cavallo");
+                return;
+            }
+
+            Cavallo cavalloModificato = new Cavallo(nome, razza, anno, sesso);
+
+            Cavalli[index] = cavalloModificato;
+            
+
+            string cavalloString = $"Nome: {cavalloModificato.Nome}, Razza: {cavalloModificato.Razza}, Anno: {cavalloModificato.Anno}, Sesso: {cavalloModificato.Sesso}";
+            lbCavalli.Items[index] = cavalloString;
+
+            AggiornaFile();
+
+            MessageBox.Show("Dati del cavallo modificati con successo");
+
+            txtBNome.Clear();
+            txtBRazza.Clear();
+            txtBAnno.Clear();
+            rdBM.Checked = false;
+            rdBF.Checked = false;
+            selezione = false;
+        }
+
+        private void AggiornaFile()
+        {
+            string[] righe = new string[Cavalli.Count];
+
+            for (int j = 0; j < Cavalli.Count; j++)
+            {
+                righe[j] = $"{Cavalli[j].Nome};{Cavalli[j].Razza};{Cavalli[j].Anno};{Cavalli[j].Sesso}";
+            }
+
+            File.WriteAllLines(percorso, righe);
+        }
+        private void Carica()
+        {
+            if (File.Exists(percorso))
+            {
+                string[] righe = File.ReadAllLines(percorso);
+
+                for (int i = 0; i < righe.Length; i++)
+                {
+                    string riga = righe[i];
+
+                    if (!string.IsNullOrWhiteSpace(riga))
+                    {
+                        string[] parti = riga.Split(';');
+
+                        if (parti.Length >= 4)
+                        {
+                            Cavallo cavallo = new Cavallo
+                            {
+                                Nome = parti[0].Trim(),
+                                Razza = parti[1].Trim(),
+                                Anno = int.Parse(parti[2].Trim()),
+                                Sesso = char.Parse(parti[3].Trim())
+                            };
+
+                            Cavalli.Add(cavallo);
+
+                            string cavalloString = $"Nome: {cavallo.Nome}, Razza: {cavallo.Razza}, Anno: {cavallo.Anno}, Sesso: {cavallo.Sesso}";
+                            lbCavalli.Items.Add(cavalloString);
+                        }
+                    }
+                }
+
+                lblStalle.Text = Cavalli.Count.ToString();
+            }
         }
     }
 }
